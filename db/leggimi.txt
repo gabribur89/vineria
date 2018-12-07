@@ -1,0 +1,6 @@
+db modificato al 07-12-2018
+
+aggiunta tabella dettagliprodotto con id_dettagli come chiave primaria, id_ordine e id_prodotto chiavi esterne relative ai dettagli delle
+altre tabelle
+
+db aggiornato = file dds e sql
