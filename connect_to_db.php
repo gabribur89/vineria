@@ -5,7 +5,7 @@
 $nomeserver = "localhost";
 $user = "root";
 $password = "12101989";
-$db = "vineria";
+$db = "modificato";
 
 //creazione connessione al db
 $con = new mysqli($nomeserver, $user, $password, $db);

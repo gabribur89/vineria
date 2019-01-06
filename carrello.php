@@ -31,7 +31,7 @@ if(isset($_POST["idprodotto"]) & !empty($_POST["idprodotto"])){
 				"idprodotto" => $row["id_prodotto"],
 				"immagineprodotto" => $row["immagineprodotto"],
 				"nomeprodotto" => $row["nomeprodotto"],
-				"qta" => $row["qta_stock"],
+				"qta" => 0,
 				"prezzo" => $row["prezzostock"],
 		);
 		
@@ -47,7 +47,7 @@ if(isset($_POST["idprodotto"]) & !empty($_POST["idprodotto"])){
 	foreach($_SESSION["carrello"] as &$dati){
 			echo " <img src = 'img/'{$dati['immagineprodotto']}><li class ='list-group-item'>{$dati['nomeprodotto']} {$dati['qta']} {$dati['prezzo']}</li>";
 		}
-	echo "</ul>";
+	echo"</ul>";
 
 	
 }

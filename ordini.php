@@ -48,6 +48,7 @@ include "functions.php";
 						<div class='col-md-2'><b>Prezzo (€)</b></div> 
 					</div>
 						<?php
+							var_dump($_POST);
 							$totale = totaleProdotti($con);
 						?>
 						</div>

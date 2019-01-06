@@ -45,12 +45,13 @@ include "connect_to_db.php";
 								?>		
 								
 								<ul class = 'list-group'>
-								
+								<form action="ordini.php" method="post">
 								<?php
-									var_dump($carrello);
+									//var_dump($carrello);
 									foreach($carrello as &$dati){
-										echo "<img src = {$dati['immagineprodotto']}/>
-										<li class ='list-group-item'>{$dati['nomeprodotto']} {$dati['qta']} {$dati['prezzo']}</li>";
+										echo "<img src = img/{$dati['immagineprodotto']}/>
+										<li class ='list-group-item'>{$dati['nomeprodotto']} {$dati['qta']} {$dati['prezzo']}
+									<input type='text' size='2' maxlength='2' style='width: 30px'; name={$dati['idprodotto']} value='1'>quantità</li>";
 									}
 								?>
 								
@@ -64,7 +65,7 @@ include "connect_to_db.php";
 								<div class="panel-body"></div>
 							<div class="panel-footer">
 								<div class="text-right">
-									<form action="ordini.php" method="get">
+									
 										<input id="checkoutcarrello" type="submit" value="Checkout Carrello"></input>
 									</form>
 								</div>
