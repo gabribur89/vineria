@@ -15,6 +15,7 @@ if ($conta ==  1){
 		session_start();
 		$_SESSION["id_utente"] = $row["id_utente"];
 		$_SESSION["nomeutente"] = $row["nomeutente"];
+		$_SESSION["ruolo"] = $row["ruolo"];
 		echo "DATI OK";
 		//header("location:homepage.php");
 }

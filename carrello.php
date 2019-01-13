@@ -45,7 +45,8 @@ if(isset($_POST["idprodotto"]) & !empty($_POST["idprodotto"])){
 	
 	echo "<ul class = 'list-group'>";
 	foreach($_SESSION["carrello"] as &$dati){
-			echo " <img src = 'img/'{$dati['immagineprodotto']}><li class ='list-group-item'>{$dati['nomeprodotto']} {$dati['qta']} {$dati['prezzo']}</li>";
+			echo " <img src = 'img/'{$dati['immagineprodotto']}><li class ='list-group-item'>{$dati['nomeprodotto']} Prezzo:{$dati['prezzo']}</li>";
+			echo " <input type='text' size='2' maxlength='2' style='width: 30px'; name={$dati['idprodotto']} value='1'>quantità</li>";
 		}
 	echo"</ul>";
 

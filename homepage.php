@@ -50,8 +50,8 @@ include "connect_to_db.php";
 									//var_dump($carrello);
 									foreach($carrello as &$dati){
 										echo "<img src = img/{$dati['immagineprodotto']}/>
-										<li class ='list-group-item'>{$dati['nomeprodotto']} {$dati['qta']} {$dati['prezzo']}
-									<input type='text' size='2' maxlength='2' style='width: 30px'; name={$dati['idprodotto']} value='1'>quantità</li>";
+										<li class ='list-group-item'>{$dati['nomeprodotto']} Prezzo: {$dati['prezzo']}";
+									    echo "<input type='text' size='2' maxlength='2' style='width: 30px'; name={$dati['idprodotto']} value={$dati['qta']}>quantità</li>";
 									}
 								?>
 								

@@ -33,6 +33,14 @@ function sessioneUtente(){
 
 if(isset($_SESSION["id_utente"]))
 					{
+						
+						if(isset($_SESSION["ruolo"]) & ($_SESSION["ruolo"]=='admin'))
+						
+						{
+							echo '<li><a href="admin.php"><span class="glyphicon glyphicon-shopping-cart"></span>Pannello Admin</a></li>';
+						}
+							
+						
 						echo 
 						
 						'<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
@@ -42,7 +50,6 @@ if(isset($_SESSION["id_utente"]))
 						<li class="divider"></li>
 						<li><a href="logout.php"><span class="glyphicon glyphicon-off"></span> Esci</a></li>
 						</ul></li></div>';
-						
 						
 					} 
 						else
@@ -57,38 +64,7 @@ if(isset($_SESSION["id_utente"]))
 						}
 }
 
-function aggiornaQuantita{
-	/*recupero dalla post id e quantità
-	per ognuno di questi confrontare l'id trovato tramite cookie - doppio ciclo
-	uso arraykeys
-	*/
-	
-		// $a = $_POST
-		/* $a = array {
-		   '1000' ->  '10',
-		   '1001' ->  '4',
-		}*/
 
-		// fai copia del carrello
-		$carrello_aggiornato = $_COOKIE['carrello'];
-
-		// estrae gli id prodotto da $a e li mette in $ids
-		$ids = array_keys($a);
-
-		//per ogni id prodotto dento $ids
-		foreach($ids as &$id){
-			  // vado a cercare l'oggetto nel carrello con lo stesso id
-			  foreach($carrello_aggiornato as &$dati){
-					 // ho trovato quello giusto allora modifico la quantità
-					 if ($id == $dati['idprodotto']){
-							  $dati['qta'] = $a[$id];
-					 }
-
-			 }
-		}
-
-		setcookie($carrello_aggiornato);
-		}
 
 function totaleProdotti($con){
 
@@ -96,14 +72,25 @@ function totaleProdotti($con){
 	
 	$newcarrello = array();
 	
-	if((isset($_COOKIE["oggetticarrello"]) & !empty($_COOKIE["oggetticarrello"]))){
+	
+	if(isset($_COOKIE["oggetticarrello"]) & !empty($_COOKIE["oggetticarrello"])){
 		$carrello = unserialize($_COOKIE["oggetticarrello"]);
 		
 			//var_dump($carrello);
 			
 			foreach($carrello as &$dati){
 				
-					$nuovaquantita = controllaStock($dati["idprodotto"],$dati["qta"],$con);
+					if(isset($_POST[$dati["idprodotto"]]) & !empty($_POST[$dati["idprodotto"]])){
+						
+						$qty = $_POST[$dati["idprodotto"]];
+						
+					//controllo che la quantità non eccede quella in stock
+					$nuovaquantita = controllaStock($dati["idprodotto"],$qty,$con);
+					}
+					
+					else {
+						$nuovaquantita = controllaStock($dati["idprodotto"],$dati["qta"],$con);
+						}
 					
 					
 					$newprodotto = array(
@@ -118,17 +105,18 @@ function totaleProdotti($con){
 					
 					array_push($newcarrello,$newprodotto);
 					
+					$totprcqty = $dati['prezzo'] * $nuovaquantita;
 				
 					 echo " 
 							<div class='row'>
 							<div class='col-md-2'>{$dati['immagineprodotto']}</div>
 							<div class='col-md-2'><b>{$dati['nomeprodotto']}</b></div>
 							<div class='col-md-2'><b>{$nuovaquantita}</b></div>
-							<div class='col-md-2'><b>{$dati['prezzo']}</b></div>
+							<div class='col-md-2'><b>$totprcqty</b></div>
 							</div>
 						  ";
 					
-					$totale = $totale + $dati['prezzo'];
+					$totale = $totale + ($dati['prezzo'] * $nuovaquantita);
 				 }
 				 
 				 setcookie("oggetticarrello",serialize($newcarrello),time()+50000, "/");

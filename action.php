@@ -57,7 +57,10 @@ if(isset($_POST["prodotto"])){
 	}else{
 		$start = 0;
 	}
-	$prodotti_query = "SELECT * FROM prodotto LIMIT $start,$limite";
+	$prodotti_query = " SELECT *
+						FROM prodotto
+						INNER JOIN stock ON prodotto.codice_stock = stock.codice_stock LIMIT $start,$limite; ";
+						/*vuole il miglior prezzo possibile... vedere MIN DESC ecc. per l'ordinamento....*/
 	$run_query = mysqli_query($con,$prodotti_query);
 	if(mysqli_num_rows($run_query) > 0){
 		while($row = mysqli_fetch_array($run_query)){
@@ -66,7 +69,11 @@ if(isset($_POST["prodotto"])){
 			$nomecantina = $row["nomecantina"];
 			$nomeprodotto = $row["nomeprodotto"];
 			$immagine = $row["immagineprodotto"];
+			$prezzo = $row["prezzostock"];
 			//bisogna fare il join con la tabella stock per vedere i prezzi     ????
+			/*SELECT nomeprodotto, immagineprodotto, id_prodotto
+			  FROM prodotto
+			  INNER JOIN stock ON prodotto.codice_stock = stock.codice_stock;*/
 			echo "
 				<div class='col-md-4'>
 					<div class='panel panel-info'>
@@ -75,6 +82,7 @@ if(isset($_POST["prodotto"])){
 							<img src='img/$immagine' id='immagineprodotto' width='150' height='250'/>
 							</div>
 								<div class='panel-heading'>
+								<b>Prezzo: $prezzo €</b>
 								<button prod_id='$id_prodotto' style='float:right;' id='carrello1' class='btn btn-danger btn-xs'>Aggiungi al Carrello</button>
 								</div>
 							</div>
