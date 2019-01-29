@@ -15,8 +15,8 @@ if(isset($_POST["idprodotto"]) & !empty($_POST["idprodotto"])){
 	
 	$idprodotto = $con->real_escape_string($_POST["idprodotto"]);
 	
-	$sql = "SELECT id_prodotto, immagineprodotto, nomeprodotto, qta_stock, prezzostock FROM prodotto INNER JOIN stock ON prodotto.codice_stock = stock.codice_stock
-			WHERE id_prodotto = ".$idprodotto."; ";
+	$sql = "SELECT prodotto.id_prodotto, immagineprodotto, nomeprodotto, qta_stock, MIN(prezzostock) AS prezzostock FROM prodotto INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto
+			WHERE prodotto.id_prodotto = ".$idprodotto."; ";
 	
 
 	$run_query = mysqli_query($con,$sql);

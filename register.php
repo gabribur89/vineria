@@ -61,11 +61,11 @@ if(empty($nome) || empty($cognome) || empty($indirizzo) || empty($citta) || empt
 		exit();
 	}
 
-	if(strlen($password) < 10){
+	if(strlen($password) < 5){
 		echo "
 				<div class='alert alert-warning'>
 				<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-				<b>La password deve contenere almeno 10 caratteri.</b>
+				<b>La password deve contenere almeno 5 caratteri.</b>
 				</div>
 			";
 		exit();

@@ -1,6 +1,7 @@
 <?php
 include "connect_to_db.php";
 
+
 $mail = mysqli_real_escape_string($con,$_POST["mailutente"]);
 $password = md5($_POST["password"]);
 $sql = "SELECT * FROM utente WHERE mail = '$mail' AND password = '$password' ";
@@ -15,10 +16,18 @@ if ($conta ==  1){
 		session_start();
 		$_SESSION["id_utente"] = $row["id_utente"];
 		$_SESSION["nomeutente"] = $row["nomeutente"];
+		$_SESSION["cognomeutente"] = $row["cognomeutente"];
+		$_SESSION["indirizzo"] = $row["indirizzo"];
+		$_SESSION["citta"] = $row["citta"];
+		$_SESSION["cap"] = $row["cap"];
+		$_SESSION["nazione"] = $row["nazione"];
+		$_SESSION["mail"] = $row["mail"];
 		$_SESSION["ruolo"] = $row["ruolo"];
 		echo "DATI OK";
+		//var_dump($_SESSION);
 		//header("location:homepage.php");
 }
+
 else
 {
 	echo "DATI KO. Nessun login, mi dispiace!";

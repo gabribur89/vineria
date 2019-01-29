@@ -59,7 +59,12 @@ if(isset($_POST["prodotto"])){
 	}
 	$prodotti_query = " SELECT *
 						FROM prodotto
-						INNER JOIN stock ON prodotto.codice_stock = stock.codice_stock LIMIT $start,$limite; ";
+						INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto
+						WHERE qta_stock >  0 AND prezzostock IN (SELECT MIN(prezzostock) 
+						FROM stock GROUP BY id_prodotto) LIMIT $start,$limite; ";
+						
+						/*SELECT MIN(prezzostock) 
+						FROM stock GROUP by id_prodotto;*/
 						/*vuole il miglior prezzo possibile... vedere MIN DESC ecc. per l'ordinamento....*/
 	$run_query = mysqli_query($con,$prodotti_query);
 	if(mysqli_num_rows($run_query) > 0){

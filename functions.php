@@ -37,19 +37,19 @@ if(isset($_SESSION["id_utente"]))
 						if(isset($_SESSION["ruolo"]) & ($_SESSION["ruolo"]=='admin'))
 						
 						{
-							echo '<li><a href="admin.php"><span class="glyphicon glyphicon-shopping-cart"></span>Pannello Admin</a></li>';
+							echo '<li><a href="admin.php"><span class="glyphicon glyphicon-duplicate"></span>Pannello Admin</a></li>';
 						}
 							
 						
 						echo 
 						
 						'<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span>
-						Benvenuto nel sito, '.$_SESSION["nomeutente"].'</a>
+						Benvenuto/a nel sito, '.$_SESSION["nomeutente"].'</a>
 						<ul class="dropdown-menu">
-						<li><a href="carrello.php"><span class="glyphicon glyphicon-shopping-cart"></span>Checkout Carrello</a></li>
+						<li><a href="ordini.php"><span class="glyphicon glyphicon-shopping-cart"></span>Checkout Carrello</a></li>
 						<li class="divider"></li>
 						<li><a href="logout.php"><span class="glyphicon glyphicon-off"></span> Esci</a></li>
-						</ul></li></div>';
+						</ul></li>';
 						
 					} 
 						else
@@ -151,7 +151,7 @@ function controllaStock($idprodotto,$quantita,$con){
 	//echo $idprodotto;
 	//var_dump($con);
 	
-	$sql = "SELECT DISTINCT stock.codice_stock, qta_stock FROM prodotto INNER JOIN stock ON prodotto.codice_stock = stock.codice_stock WHERE id_prodotto = $idprodotto";
+	$sql = "SELECT DISTINCT qta_stock FROM prodotto INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto WHERE prodotto.id_prodotto = $idprodotto";
 	$run_query = mysqli_query($con,$sql);
 	$risultato = $quantita;
 	
@@ -176,8 +176,10 @@ function controllaStock($idprodotto,$quantita,$con){
 
 function aggiornaStock($qta,$idprod,$con){
 	
-		$sql_stock="UPDATE stock INNER JOIN prodotto ON stock.codice_stock = prodotto.codice_stock SET qta_stock=qta_stock - ? 
+		$sql_stock="UPDATE stock INNER JOIN prodotto ON stock.id_prodotto = prodotto.id_prodotto SET qta_stock=qta_stock - ? 
 				    WHERE prodotto.id_prodotto=?";
+					
+					/*non permettere di aggiungere prodotti al carrello quando la qta è 0*/
 		
 		$query = $con->prepare($sql_stock);
 		$query->bind_param("ii", $qta, $idprod);
@@ -191,47 +193,102 @@ function aggiornaStock($qta,$idprod,$con){
 
 
 function inserisciOrdine($idutente,$con){
+	
+		$idordine = NULL;
 
-$sql_insert = "INSERT INTO ordine (id_utente) VALUES ($idutente)";	
-	
-	//var_dump(mysqli_query($con,$sql_insert));
-	//var_dump($sql_insert);
-	
-	if(mysqli_query($con,$sql_insert)) {
-		$idordine = mysqli_insert_id($con);
 		
 		if((isset($_COOKIE["oggetticarrello"]) & !empty($_COOKIE["oggetticarrello"]))){
 			$carrello = unserialize($_COOKIE["oggetticarrello"]);
 				foreach($carrello as &$dati){
-					$sql_details = "INSERT INTO dettagli (id_ordine, id_prodotto, qta_ordine) VALUES (?,?,?)";
-					$query = $con->prepare($sql_details);
+					$sql_insert = "INSERT INTO ordine (id_utente, id_prodotto, qta_ordine) VALUES (?, ?, ?)";	
+					$query = $con->prepare($sql_insert);
 
-					$query->bind_param("iii", $idordine, $dati['idprodotto'], $dati['qta']);
+					$query->bind_param("iii", $idutente, $dati['idprodotto'], $dati['qta']);
 					/* execute query */
-					//$query->execute();
-					if (!$query->execute()){
-						printf("error %s\n", $con->error);
+					if ($query->execute()){
+						$idordine = mysqli_insert_id($con);
+						aggiornaStock($dati['qta'],$dati['idprodotto'],$con);
 					}
-					echo"cacasasc";
-					var_dump($dati['qta']);
-					aggiornaStock($dati['qta'],$dati['idprodotto'],$con);
-				}
+					else printf("error %s\n", $con->error);
 				
 		}
-		
-	} else 
-	{
-        printf("Errore %s\n", $con->error);
-		echo "mi dispiace non è stato recuperato niente....";
-		
+	
+}
+
+return $idordine;
+
+}
+
+function inviaMail($con,$idordine){
+	
+		//var_dump($_SESSION);
+		$to = $_SESSION["mail"];
+		$subject = "Ordine WineShop n° {$idordine} ";
+		$message = "";
+		$totale = 0;
+	
+		if((isset($_COOKIE["oggetticarrello"]) & !empty($_COOKIE["oggetticarrello"]))){
+			$carrello = unserialize($_COOKIE["oggetticarrello"]);
+			
+			$message = "Gentile " .$_SESSION["nomeutente"]. " " .$_SESSION["cognomeutente"]. "\n\n";
+			$message .= "Grazie per il tuo acquisto, questo è il riepilogo con i tuoi dati:\n\n";
+			
+			foreach($carrello as &$dati){
+				
+				$message .= "Prodotto: {$dati['nomeprodotto']} Quantità: {$dati['qta']} Prezzo: {$dati['prezzo']}\n";
+				
+				
+				$totale = $totale + ($dati['prezzo'] * $dati['qta']);
+			}
+			
+			$message .= "\nPer un totale di $totale €\n";
+			
+			//echo $message;
+	
+		mail($to,$subject,$message);
+	
+}
+}
+
+function visualizzaStock($con){
+	
+	$sql = "SELECT * FROM `stock` INNER JOIN `prodotto` ON stock.id_prodotto = prodotto.id_prodotto;";
+	$run_query = mysqli_query($con,$sql);
+	if(mysqli_num_rows($run_query) > 0){
+		while($row = mysqli_fetch_array($run_query)){
+			$id_prodotto = $row["id_prodotto"];
+			$prezzostock = $row["prezzostock"];
+			$qta_stock = $row["qta_stock"];
+			$data_aggiunta = $row["data_aggiunta"];
+			$status = $row["status"];//eliminare
+			$codice_stock = $row["codice_stock"];//controllare ed eliminare
+			$id_stock = $row["id_stock"];
+			$nomeprodotto = $row["nomeprodotto"];
+			$annoprodotto = $row["annoprodotto"];
+			$descrizioneprodotto = $row["descrizioneprodotto"];
+			$nomecantina = $row["nomecantina"];
+			$categoriaprodotto = $row["categoriaprodotto"];
+			$categoria = $row["categoria"];
+			$immagineprodotto = $row["immagineprodotto"];
+			
+			echo "	 <tr>
+							  <th scope='row'>$id_stock</th>
+							  <td>$id_prodotto</td>
+							  <td>$prezzostock</td>
+							  <td>$qta_stock</td>
+							  <td>$data_aggiunta</td>
+							  <td>$nomeprodotto</td>
+							  <td>$annoprodotto</td>
+							  <td>$descrizioneprodotto</td>
+							  <td>$nomecantina</td>
+							  <td>$categoriaprodotto</td>
+							  <td>$categoria</td>
+							  <td>$immagineprodotto</td>
+					</tr>
+							";
+		}
 	}
 	
-	
-	/*qta carrello da sottrarre alla qta in stock UPDATE stock SET qta_stock=12 WHERE codice_stock=10
-	UPDATE stock INNER JOIN prodotto ON stock.codice_stock = prodotto.codice_stock SET qta_stock=12 WHERE prodotto.id_prodotto=1000
-	
-	qta_stock si può sottrarre*/
-
 	
 }
 

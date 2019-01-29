@@ -24,7 +24,7 @@ include "connect_to_db.php";
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a href="#" class="navbar-brand">WineShop</a>
+				<a href="homepage.php" class="navbar-brand">WineShop</a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-shopping-cart"></span>Carrello<span class="badge">0</span></a>
@@ -80,6 +80,7 @@ include "connect_to_db.php";
 			</ul>
 		
 	</div>
+	</div>
 	<p></br></p>
 	<p></br></p>
 	<p></br></p>
@@ -87,8 +88,7 @@ include "connect_to_db.php";
 		<div class="row">
 			<div class="col-md-1"></div>
 			<div class="col-md-2">
-				<div id="ottieni_tipo">
-				</div>
+				<div id="ottieni_tipo"></div>
 				<!--<div class="nav nav-pills nav-stacked">
 					<li class="active"><a href="#"><h4>Tipologia Vino</h4></a></li>
 					<li><a href="#">Categorie</a></li>
@@ -96,8 +96,7 @@ include "connect_to_db.php";
 					<li><a href="#">Categorie</a></li>
 					<li><a href="#">Categorie</a></li>
 				</div>-->
-				<div id="ottieni_cantina">
-				</div>
+				<div id="ottieni_cantina"></div>
 				<!--<div class="nav nav-pills nav-stacked">
 					<li class="active"><a href="#"><h4>Cantina Produttrice</h4></a></li>
 					<li><a href="#">Marca</a></li>
@@ -108,8 +107,7 @@ include "connect_to_db.php";
 			</div>
 			<div class="col-md-8">
 				<div class="row">
-					<div class="col-md-12" id="prod_msg">
-					</div>
+					<div class="col-md-12" id="prod_msg"></div>
 				</div>
 				<div class="panel panel-info">
 					<div class="panel-heading">Prodotti</div>
@@ -127,6 +125,9 @@ include "connect_to_db.php";
 					<div class="panel-footer">&copy; 2018 <a href="mailto:boss89al@gmail.com">boss89al</a></div>
 				</div>
 		</div>
+	</div>
+	</div>
+	</div>
 	</div>
 </body>
 

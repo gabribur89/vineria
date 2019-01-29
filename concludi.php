@@ -10,7 +10,13 @@
 	if(isset($_SESSION["id_utente"]))
 	{
 		
-		inserisciOrdine($_SESSION["id_utente"],$con);
+		$idordine = inserisciOrdine($_SESSION["id_utente"],$con);
+		
+		echo "E' stata inviata una mail relativa all ordine" ;
+		
+		/*stilizzare solita pagina html*/
+					
+		inviaMail($con,$idordine);
 		
 		/*avrò questo nuovo carrello contenente i prodotti
 		
