@@ -57,11 +57,19 @@ if(isset($_POST["prodotto"])){
 	}else{
 		$start = 0;
 	}
-	$prodotti_query = " SELECT *
+	$prodotti_query = /*" SELECT *
 						FROM prodotto
 						INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto
 						WHERE qta_stock >  0 AND prezzostock IN (SELECT MIN(prezzostock) 
-						FROM stock GROUP BY id_prodotto) LIMIT $start,$limite; ";
+						FROM stock GROUP BY id_prodotto) LIMIT $start,$limite; ";*/
+						
+						
+						
+						" SELECT * FROM prodotto INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto 
+						WHERE qta_stock > 0 AND prezzostock 
+						GROUP BY stock.id_prodotto HAVING MIN(prezzostock) LIMIT $start,$limite; ";
+						
+						
 						
 						/*SELECT MIN(prezzostock) 
 						FROM stock GROUP by id_prodotto;*/
@@ -131,5 +139,16 @@ if(isset($_POST["seleziona_tipo"]) || isset($_POST["seleziona_cantina"])){
 		}
 }
 }
+
+//var_dump($_POST);
+
+
+
+if(isset($_POST["inserisci"])){
+	var_dump($_POST);
+	
+}
+
+
 
 ?>

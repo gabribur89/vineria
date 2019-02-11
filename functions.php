@@ -260,7 +260,6 @@ function visualizzaStock($con){
 			$prezzostock = $row["prezzostock"];
 			$qta_stock = $row["qta_stock"];
 			$data_aggiunta = $row["data_aggiunta"];
-			$status = $row["status"];//eliminare
 			$codice_stock = $row["codice_stock"];//controllare ed eliminare
 			$id_stock = $row["id_stock"];
 			$nomeprodotto = $row["nomeprodotto"];
@@ -271,8 +270,14 @@ function visualizzaStock($con){
 			$categoria = $row["categoria"];
 			$immagineprodotto = $row["immagineprodotto"];
 			
-			echo "	 <tr>
-							  <th scope='row'>$id_stock</th>
+			echo "	 <tr id='$id_stock'>
+							  <th scope='row'>        
+								<div class='form-check'>
+									<input type='checkbox' class='form-check-input' value='$id_stock' name='selezione$id_stock'>
+										<label class='form-check-label' for='defaultCheck2'></label>
+								</div>
+							  </th>
+							  <td>$id_stock</td>
 							  <td>$id_prodotto</td>
 							  <td>$prezzostock</td>
 							  <td>$qta_stock</td>
