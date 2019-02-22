@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 $("#elimina").click(function(event){
 		event.preventDefault();
-		//alert($("form").serialize());
+
 		$.ajax({
 			url : "elimina.php",
 			method : "POST",
@@ -10,25 +10,40 @@ $("#elimina").click(function(event){
 			dataType: 'json',
             cache: false,
 			success: function(data){
-				//alert(data);
-				//'$id_stock'
-				//$("#1").remove();
-				alert(data);
-				//remove o hide
-				//nascondere la linea oppure eliminarla in base all id della checkbox
+
+				var i;
+				var sel = "#";
+				
+				for (i=0;i<data.length;i++){
+					
+					$(sel+data[i]).remove();
+				}
 				
 			}
 		})
 	})
 	
-$("#inserisci").click(function(event){
+	$("form#data").submit(function(event){
 		event.preventDefault();
+		var data = new FormData(this);
+		//data.append( 'file', 'prova' );
+		/*var i;
+		var data = formData.values();
+		
+		for (i=0;i<data.length;i++){
+			alert(data[i]);
+		}*/
+		//alert(formData.values());
 		$.ajax({
-			url : "action.php",
+			url : "inserisci_queries.php",
 			method : "POST",
-			data: $("form").serialize(),
+			data: data,
+			processData: false,
+			contentType: false,
 			success: function(data){
-				alert(data);
+				$("#messaggio").html(data);
+				//alert(data);
+				//window.location= "admin.php";
 			}
 		})
 	})

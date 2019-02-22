@@ -40,18 +40,22 @@ include "connect_to_db.php";
 								<?php 
 							
 								if(isset($_COOKIE["oggetticarrello"]) & !empty($_COOKIE["oggetticarrello"])) { 
-								  //var_dump($_COOKIE["oggetticarrello"]);
+								  
 								  $carrello = unserialize($_COOKIE["oggetticarrello"]);
+								
 								?>		
 								
 								<ul class = 'list-group'>
 								<form action="ordini.php" method="post">
 								<?php
-									//var_dump($carrello);
+									
 									foreach($carrello as &$dati){
-										echo "<img src = img/{$dati['immagineprodotto']}/>
-										<li class ='list-group-item'>{$dati['nomeprodotto']} Prezzo: {$dati['prezzo']}";
-									    echo "<input type='text' size='2' maxlength='2' style='width: 30px'; name={$dati['idprodotto']} value={$dati['qta']}>quantità</li>";
+										
+										echo "<img src = {$dati['immagineprodotto']}/>";
+										echo "<li class ='list-group-item'>{$dati['nomeprodotto']} Prezzo: {$dati['prezzo']}";
+									    echo "<input type='text' size='2' maxlength='2' style='width: 30px'; name={$dati['idprodotto']} value='1'>quantità"; //value='1' ???
+										
+										echo "</li>";
 									}
 								?>
 								

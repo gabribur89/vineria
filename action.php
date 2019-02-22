@@ -3,14 +3,14 @@ session_start();
 include "connect_to_db.php";
 
 if(isset($_POST["tipo"])){
-	$tipo_query = "SELECT * FROM tipo";
-	$run_query = mysqli_query($con,$tipo_query);
+	$select_tipo = "SELECT * FROM tipo";
+	$tipoinserito = mysqli_query($con,$select_tipo);
 	echo "
 		<div class='nav nav-pills nav-stacked'>
 		<li class='active'><a href='#'><h4>Tipo di Vino</h4></a></li>
 	";
-	if (mysqli_num_rows($run_query) > 0){
-		while($row = mysqli_fetch_array($run_query)){
+	if (mysqli_num_rows($tipoinserito) > 0){
+		while($row = mysqli_fetch_array($tipoinserito)){
 			$id_tipo = $row["id_tipo"];
 			$descrizionetipo = $row["descrizionetipo"];
 			echo "
@@ -21,14 +21,14 @@ if(isset($_POST["tipo"])){
 	}
 }
 if(isset($_POST["cantina"])){
-	$cantina_query = "SELECT * FROM cantina";
-	$run_query = mysqli_query($con,$cantina_query);
+	$select_cantina = "SELECT * FROM cantina";
+	$cantinainserita = mysqli_query($con,$select_cantina);
 	echo "
 		<div class='nav nav-pills nav-stacked'>
 		<li class='active'><a href='#'><h4>Cantina Produttrice</h4></a></li>
 	";
-	if (mysqli_num_rows($run_query) > 0){
-		while($row = mysqli_fetch_array($run_query)){
+	if (mysqli_num_rows($cantinainserita) > 0){
+		while($row = mysqli_fetch_array($cantinainserita)){
 			$nomecantina = $row["nomecantina"];
 			$descrizionecantina = $row["descrizionecantina"];
 			echo "
@@ -39,10 +39,10 @@ if(isset($_POST["cantina"])){
 	}
 }
 if(isset($_POST["pagina"])){
-	$sql = "SELECT * FROM prodotto";
-	$run_query = mysqli_query($con,$sql);
-	$conta = mysqli_num_rows($run_query);
-	$num_pagina = ceil($conta/8);
+	$selectprodotto = "SELECT * FROM prodotto";
+	$prodottoinserito = mysqli_query($con,$selectprodotto);
+	$contaprodotti = mysqli_num_rows($prodottoinserito);
+	$num_pagina = ceil($contaprodotti/8);
 	for($i=1;$i<=$num_pagina;$i++){
 		echo "
 		<li><a href='#' page='$i' id='page'>$i</a></li>
@@ -57,42 +57,26 @@ if(isset($_POST["prodotto"])){
 	}else{
 		$start = 0;
 	}
-	$prodotti_query = /*" SELECT *
-						FROM prodotto
-						INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto
-						WHERE qta_stock >  0 AND prezzostock IN (SELECT MIN(prezzostock) 
-						FROM stock GROUP BY id_prodotto) LIMIT $start,$limite; ";*/
-						
-						
-						
-						" SELECT * FROM prodotto INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto 
+	$prodotti_pagina = " SELECT * FROM prodotto INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto 
 						WHERE qta_stock > 0 AND prezzostock 
 						GROUP BY stock.id_prodotto HAVING MIN(prezzostock) LIMIT $start,$limite; ";
 						
-						
-						
-						/*SELECT MIN(prezzostock) 
-						FROM stock GROUP by id_prodotto;*/
-						/*vuole il miglior prezzo possibile... vedere MIN DESC ecc. per l'ordinamento....*/
-	$run_query = mysqli_query($con,$prodotti_query);
-	if(mysqli_num_rows($run_query) > 0){
-		while($row = mysqli_fetch_array($run_query)){
+	$risultato = mysqli_query($con,$prodotti_pagina);
+	if(mysqli_num_rows($risultato) > 0){
+		while($row = mysqli_fetch_array($risultato)){
 			$id_prodotto = $row["id_prodotto"];
 			$categoria = $row["categoria"];
 			$nomecantina = $row["nomecantina"];
 			$nomeprodotto = $row["nomeprodotto"];
 			$immagine = $row["immagineprodotto"];
 			$prezzo = $row["prezzostock"];
-			//bisogna fare il join con la tabella stock per vedere i prezzi     ????
-			/*SELECT nomeprodotto, immagineprodotto, id_prodotto
-			  FROM prodotto
-			  INNER JOIN stock ON prodotto.codice_stock = stock.codice_stock;*/
+
 			echo "
 				<div class='col-md-4'>
 					<div class='panel panel-info'>
 						<div class='panel-heading'>$nomeprodotto</div>
 							<div class='panel-body'>
-							<img src='img/$immagine' id='immagineprodotto' width='150' height='250'/>
+							<img src='$immagine' id='immagineprodotto' width='150' height='250'/>
 							</div>
 								<div class='panel-heading'>
 								<b>Prezzo: $prezzo €</b>
@@ -107,10 +91,12 @@ if(isset($_POST["prodotto"])){
 if(isset($_POST["seleziona_tipo"]) || isset($_POST["seleziona_cantina"])){
 	if(isset($_POST["seleziona_tipo"])){
 		$id = $_POST["id_tipo"];
-		$sql = "SELECT * FROM prodotto WHERE categoria = '$id' ";
+		$sql = "SELECT * FROM prodotto INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto 
+				WHERE categoria = '$id' AND qta_stock > 0";
 	}else if(isset($_POST["seleziona_cantina"])){
 		$nome = $_POST["id_cantina"];
-		$sql = "SELECT * FROM prodotto WHERE nomecantina = '$nome' ";
+		$sql = "SELECT * FROM prodotto INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto
+				WHERE nomecantina = '$nome' AND qta_stock > 0";
 	}
 	$run_query = mysqli_query($con,$sql);
 	if(!mysqli_query($con,$sql)){
@@ -128,7 +114,7 @@ if(isset($_POST["seleziona_tipo"]) || isset($_POST["seleziona_cantina"])){
 					<div class='panel panel-info'>
 						<div class='panel-heading'>$nomeprodotto</div>
 							<div class='panel-body'>
-							<img src='img/$immagine' id='immagineprodotto' width='160' height='250'/>
+							<img src='$immagine' id='immagineprodotto' width='160' height='250'/>
 							</div>
 								<div class='panel-heading'>
 								<button prod_id='$id_prodotto' style='float:right;' id='carrello1' class='btn btn-danger btn-xs'>Aggiungi al Carrello</button>
@@ -138,15 +124,6 @@ if(isset($_POST["seleziona_tipo"]) || isset($_POST["seleziona_cantina"])){
 			";
 		}
 }
-}
-
-//var_dump($_POST);
-
-
-
-if(isset($_POST["inserisci"])){
-	var_dump($_POST);
-	
 }
 
 

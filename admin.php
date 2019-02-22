@@ -81,7 +81,7 @@ include "connect_to_db.php";
 					</div>
 					
 					
-					<button id="inserisci" type="submit" class="btn btn-primary">Inserisci</button>
+					<a href="inserisci.php" class="btn btn-primary" role="button">Inserisci</a>
 					<button id="elimina" type="submit" class="btn btn-primary">Elimina</button>
 					
 					</form>

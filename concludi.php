@@ -12,11 +12,15 @@
 		
 		$idordine = inserisciOrdine($_SESSION["id_utente"],$con);
 		
-		echo "E' stata inviata una mail relativa all ordine" ;
-		
 		/*stilizzare solita pagina html*/
 					
+		echo "<h1>E' stata inviata una mail relativa al tuo ordine!</h1>" ;	
+		
+		echo "	<a href='homepage.php'>Torna alla Homepage</a>";
+		
+		
 		inviaMail($con,$idordine);
+		
 		
 		/*avrò questo nuovo carrello contenente i prodotti
 		

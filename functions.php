@@ -76,8 +76,7 @@ function totaleProdotti($con){
 	if(isset($_COOKIE["oggetticarrello"]) & !empty($_COOKIE["oggetticarrello"])){
 		$carrello = unserialize($_COOKIE["oggetticarrello"]);
 		
-			//var_dump($carrello);
-			
+		
 			foreach($carrello as &$dati){
 				
 					if(isset($_POST[$dati["idprodotto"]]) & !empty($_POST[$dati["idprodotto"]])){
@@ -148,9 +147,6 @@ function mostraRiepilogo(){
 
 function controllaStock($idprodotto,$quantita,$con){
 	
-	//echo $idprodotto;
-	//var_dump($con);
-	
 	$sql = "SELECT DISTINCT qta_stock FROM prodotto INNER JOIN stock ON prodotto.id_prodotto = stock.id_prodotto WHERE prodotto.id_prodotto = $idprodotto";
 	$run_query = mysqli_query($con,$sql);
 	$risultato = $quantita;
@@ -158,8 +154,6 @@ function controllaStock($idprodotto,$quantita,$con){
 	
 	
 	while($row = mysqli_fetch_array($run_query)){
-	
-		//var_dump($row);
 		
 		if ($row["qta_stock"] < $quantita){
 			$risultato = $row["qta_stock"];
@@ -171,7 +165,22 @@ function controllaStock($idprodotto,$quantita,$con){
 
 	return $risultato;
 	
-	//echo"ciao3";
+}
+
+function ottieniNomeCantina($con){
+	
+	$sql = "SELECT nomecantina from cantina";
+	$run_query = mysqli_query($con,$sql);
+	
+	
+	if(mysqli_num_rows($run_query) > 0){
+		while($row = mysqli_fetch_array($run_query)){
+			
+			$nomecantina = $row["nomecantina"];
+			
+			echo "<option>$nomecantina</option>";
+		}
+	}
 }
 
 function aggiornaStock($qta,$idprod,$con){
@@ -221,7 +230,6 @@ return $idordine;
 
 function inviaMail($con,$idordine){
 	
-		//var_dump($_SESSION);
 		$to = $_SESSION["mail"];
 		$subject = "Ordine WineShop n° {$idordine} ";
 		$message = "";
@@ -231,7 +239,7 @@ function inviaMail($con,$idordine){
 			$carrello = unserialize($_COOKIE["oggetticarrello"]);
 			
 			$message = "Gentile " .$_SESSION["nomeutente"]. " " .$_SESSION["cognomeutente"]. "\n\n";
-			$message .= "Grazie per il tuo acquisto, questo è il riepilogo con i tuoi dati:\n\n";
+			$message .= "Grazie per il tuo acquisto su WineShop, questo è il riepilogo con i tuoi dati:\n\n";
 			
 			foreach($carrello as &$dati){
 				
@@ -242,8 +250,6 @@ function inviaMail($con,$idordine){
 			}
 			
 			$message .= "\nPer un totale di $totale €\n";
-			
-			//echo $message;
 	
 		mail($to,$subject,$message);
 	
@@ -252,15 +258,14 @@ function inviaMail($con,$idordine){
 
 function visualizzaStock($con){
 	
-	$sql = "SELECT * FROM `stock` INNER JOIN `prodotto` ON stock.id_prodotto = prodotto.id_prodotto;";
-	$run_query = mysqli_query($con,$sql);
-	if(mysqli_num_rows($run_query) > 0){
-		while($row = mysqli_fetch_array($run_query)){
+	$querystock = "SELECT * FROM `stock` INNER JOIN `prodotto` ON stock.id_prodotto = prodotto.id_prodotto;";
+	$vedistock = mysqli_query($con,$querystock);
+	if(mysqli_num_rows($vedistock) > 0){
+		while($row = mysqli_fetch_array($vedistock)){
 			$id_prodotto = $row["id_prodotto"];
 			$prezzostock = $row["prezzostock"];
 			$qta_stock = $row["qta_stock"];
 			$data_aggiunta = $row["data_aggiunta"];
-			$codice_stock = $row["codice_stock"];//controllare ed eliminare
 			$id_stock = $row["id_stock"];
 			$nomeprodotto = $row["nomeprodotto"];
 			$annoprodotto = $row["annoprodotto"];

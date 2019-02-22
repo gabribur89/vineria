@@ -81,9 +81,9 @@ if(empty($nome) || empty($cognome) || empty($indirizzo) || empty($citta) || empt
 	}
 
 	//controllo se esiste gia' una mail nel db
-	$sql = "SELECT mail FROM utente WHERE mail = '$mail' LIMIT 1";
-	$check_query = mysqli_query($con,$sql);
-	$count_mail = mysqli_num_rows($check_query);
+	$querymail = "SELECT mail FROM utente WHERE mail = '$mail' LIMIT 1";
+	$check_mail = mysqli_query($con,$querymail);
+	$count_mail = mysqli_num_rows($check_mail);
 	if($count_mail > 0){
 		echo "
 				<div class='alert alert-danger'>
@@ -94,17 +94,14 @@ if(empty($nome) || empty($cognome) || empty($indirizzo) || empty($citta) || empt
 		exit();
 	} else{
 		$password = md5($password);
-		$sql = "INSERT INTO 
+		$insertdata = "INSERT INTO 
 		`utente` 
 		(`nomeutente`, `cognomeutente`, `indirizzo`, 
 		`citta`, `cap`, `nazione`, `data_nascita`, `mail`,`password`) 
 		VALUES ('$nome', '$cognome', '$indirizzo', '$citta', 
 		'$cap', '$nazione', '$data', '$mail', '$password')";
-		$run_query = mysqli_query($con,$sql);
-		if($run_query){
-			
-		//echo($sql);
-		
+		$registerdata = mysqli_query($con,$insertdata);
+		if($registerdata){
 		
 		echo "
 				<div class='alert alert-success'>
@@ -112,11 +109,9 @@ if(empty($nome) || empty($cognome) || empty($indirizzo) || empty($citta) || empt
 				<b>Registrazione avvenuta con successo!!</b>
 				</div>
 			";
+			
 		}
 		
-		//else printf("Attenzione!!! ", $con->error);
-		//echo($sql);
-		//die(mysqli_error($con));
 	}
 }
 

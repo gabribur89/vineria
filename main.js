@@ -87,23 +87,9 @@ $(document).ready(function(){
 		})
 	})
 	
-	/*$(document).on('click','.btn, .btn-danger, .btn-xs',function(){
-		event.preventDefault();
-		//devo riconoscere il prodotto
-		var pid = $(this).$("#prod_id");
-		alert(pid);
-		//alert("ciao");
-		
-	})*/
 	$(document).on('click','body #carrello1', function(event){
 		event.preventDefault();
-		//alert("Yee");
-		//var pid = $(this.prod_id);
-		//alert(pid);
-		//var d = $(this).data('prod_id');      
-		//alert(d);
 		var p = $(this).attr('prod_id');
-		//alert(p);
 		$.ajax({
 			url: "carrello.php",
 			method: "POST",
@@ -117,7 +103,6 @@ $(document).ready(function(){
 	
 	$(document).on('click','body #svuotacarrello', function(event){
 		event.preventDefault();
-		//alert("ciao");
 		$.ajax({
 			url : "carrello.php",
 			method : "POST",

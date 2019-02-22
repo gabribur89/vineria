@@ -1,4 +1,8 @@
-<?php include "connect_to_db.php"; ?>
+<?php 
+
+include "connect_to_db.php"; 
+
+?>
 
 <html>
 	<head>
