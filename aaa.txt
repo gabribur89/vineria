@@ -1,0 +1,32 @@
+function aggiornaQuantita{
+	/*recupero dalla post id e quantità
+	per ognuno di questi confrontare l'id trovato tramite cookie - doppio ciclo
+	uso arraykeys
+	*/
+	
+		// $a = $_POST
+		/* $a = array {
+		   '1000' ->  '10',
+		   '1001' ->  '4',
+		}*/
+
+		// fai copia del carrello
+		$carrello_aggiornato = $_COOKIE['carrello'];
+
+		// estrae gli id prodotto da $a e li mette in $ids
+		$ids = array_keys($a);
+
+		//per ogni id prodotto dento $ids
+		foreach($ids as &$id){
+			  // vado a cercare l'oggetto nel carrello con lo stesso id
+			  foreach($carrello_aggiornato as &$dati){
+					 // ho trovato quello giusto allora modifico la quantità
+					 if ($id == $dati['idprodotto']){
+							  $dati['qta'] = $a[$id];
+					 }
+
+			 }
+		}
+
+		setcookie($carrello_aggiornato);
+		}

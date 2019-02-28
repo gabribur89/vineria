@@ -1,0 +1,28 @@
+INSERT INTO 'utente' 
+		('id_utente`, `nomeutente`, `cognomeutente', `indirizzo`, 
+		`citta`, `cap`, `nazione`, `data_nascita`, `mail`, `password`) 
+		VALUES (NULL, `Pippo`, `Bianchi`, `via torino 56`, `asti`, 
+		`14100`, `italia`, `1998-04-16`, `pippo.bianchi@hotmail.it`, `5699c1a2464928085bfac78e740de4e8`)
+		
+		
+		
+		
+		
+INSERT INTO utente (id_utente, nomeutente, cognomeutente, indirizzo, citta, cap, nazione, data_nascita, mail, password) VALUES (NULL, `Pippo`, `Bianchi`, `via torino 56`, `asti`, `14100`, `italia`, `1998-04-16`, `pippo.bianchi@hotmail.it`, `5699c1a2464928085bfac78e740de4e8`)
+
+
+
+
+
+$sql = "INSERT INTO `utente` (`id_utente`, `nomeutente`, `cognomeutente`, `indirizzo`, `citta`, `cap`, `nazione`, `data_nascita`, `mail`, `password`) VALUES (\'2\', \'Pippo\', \'Bianchi\', \'via torino 56\', \'asti\', \'14100\', \'italia\', \'1998-04-16\', \'pippo.bianchi@hotmail.it\', \'superpippo00\')";
+
+pippo pippo.bianchi@hotmail.it superpippo00
+
+caio cariddu81@libero.it cariddu9999 NON ESISTE, CREARLO
+
+robi.desantis@libero.it robertino00
+
+
+Fa solo login con roberto de santis!!!! come mai????
+
+Dopo aver fatto login non reindirizza automaticamente alla pagina con la sessione di login, in pratica bisogna ricaricare la pagina.

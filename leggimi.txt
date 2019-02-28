@@ -1,0 +1,16 @@
+functions.php
+
+per funzioni da action.php da includere per la homepage
+
+in modo da dividere il codice
+
+testare calendario di bootstrap dividendo codici ..... date input!!! risolve. Non è compatibile con alcuni browser (vecchi)
+
+
+migliorie:
+
+controlli vari.... es. se utente è maggiorenne ed altre cose
+
+zoom quando passi il mouse sull'immagine del prodotto
+
+area admin (non richiesta ma può essere utile)

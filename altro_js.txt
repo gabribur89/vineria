@@ -1,0 +1,79 @@
+
+HTML
+
+<form id='myfrm'>
+    <label for="username">Username</label>
+    <input type="text" id="username" placeholder="Username" />
+
+    <label for="password">Password</label>
+    <input type="text" id="password" placeholder="Password" />
+
+    <button id="login">Login</button> 
+</form>
+JavaScript:
+
+$(document).ready(function() {
+
+    $('#myform').submit(function() {
+
+        $.ajax({
+            type: "POST",
+            url: 'admin/login.php',
+            data: {
+                username: $("#username").val(),
+                password: $("#password").val()
+            },
+            success: function(data)
+            {
+                if (data === 'Correct') {
+                    window.location.replace('admin/admin.php');
+                }
+                else {
+                    alert(data);
+                }
+            }
+        });
+        //this is mandatory other wise your from will be submitted.
+        return false; 
+    });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function()
+  {
+     var pass = $("#password").val();
+     var username = $("#username").val();
+     $().click(function()
+     {
+         var request = $.ajax(
+         {
+             url:server.php,
+             type:POST,
+             data:{password:pass, username:username}
+             success:function()
+             {                 
+               alert("Success");
+             }
+         });
+});  
