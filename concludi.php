@@ -11,8 +11,6 @@
 	{
 		
 		$idordine = inserisciOrdine($_SESSION["id_utente"],$con);
-		
-		/*stilizzare solita pagina html*/
 					
 		echo "<h1>E' stata inviata una mail relativa al tuo ordine!</h1>" ;	
 		
@@ -20,15 +18,6 @@
 		
 		
 		inviaMail($con,$idordine);
-		
-		
-		/*avrò questo nuovo carrello contenente i prodotti
-		
-		sessione utente $_SESSION["id_utente"] $dati["idprodotto"] $dati["qta"]
-		
-		id utente come cookie, al posto della sessione, utile anche per la query
-		
-		*/
 		
 	}
 	

@@ -136,12 +136,5 @@ $(document).ready(function(){
 		})
 	})
 	
-	//zoom immagine
-	
-	$("immagineprodotto").mouseover(function() {
-		$("immagineprodotto").css({ width: '150px', height: '150px' });
-	});
-	
-	
-								
+						
 })

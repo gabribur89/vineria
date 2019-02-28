@@ -108,7 +108,7 @@ function totaleProdotti($con){
 				
 					 echo " 
 							<div class='row'>
-							<div class='col-md-2'>{$dati['immagineprodotto']}</div>
+							<div class='col-md-2'><img src = '{$dati['immagineprodotto']}' height='50px' width='50px'/></div>
 							<div class='col-md-2'><b>{$dati['nomeprodotto']}</b></div>
 							<div class='col-md-2'><b>{$nuovaquantita}</b></div>
 							<div class='col-md-2'><b>$totprcqty</b></div>
@@ -133,7 +133,7 @@ function mostraRiepilogo(){
 			foreach($carrello as &$dati){
 					 echo " 
 							<div class='row'>
-							<div class='col-md-2'>{$dati['immagineprodotto']}</div>
+							<div class='col-md-2'><img src = '{$dati['immagineprodotto']}' height='24px' width='24px'/></div>
 							<div class='col-md-2'><b>{$dati['nomeprodotto']}</b></div>
 							<div class='col-md-2'><b>{$dati['qta']}</b></div>
 							<div class='col-md-2'><b>{$dati['prezzo']}</b></div> 

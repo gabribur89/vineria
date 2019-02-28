@@ -49,11 +49,13 @@ include "connect_to_db.php";
 								<form action="ordini.php" method="post">
 								<?php
 									
+									//var_dump($_SESSION);
+									
 									foreach($carrello as &$dati){
 										
-										echo "<img src = {$dati['immagineprodotto']}/>";
+										echo "<img src = '{$dati['immagineprodotto']}' height='50px' width='50px'/>";
 										echo "<li class ='list-group-item'>{$dati['nomeprodotto']} Prezzo: {$dati['prezzo']}";
-									    echo "<input type='text' size='2' maxlength='2' style='width: 30px'; name={$dati['idprodotto']} value='1'>quantità"; //value='1' ???
+									    echo "<input type='text' size='2' maxlength='2' style='width: 30px'; name={$dati['idprodotto']} value='{$dati['qta']}'>quantità"; //value='1' ???
 										
 										echo "</li>";
 									}
